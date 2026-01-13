@@ -1,0 +1,77 @@
+﻿<!-- web/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cooker AI - 创世神控制台</title>
+    <meta charset="utf-8">
+    <style>
+        body {
+            font-family: monospace;
+            background: #0a0a0a;
+            color: #0f0;
+        }
+
+        #console {
+            width: 100%;
+            height: 400px;
+            background: #000;
+            overflow-y: auto;
+        }
+
+        .user {
+            color: #0ff;
+        }
+
+        .cooker {
+            color: #f0f;
+        }
+
+        .system {
+            color: #ff0;
+        }
+
+        input {
+            width: 80%;
+            background: #111;
+            color: #0f0;
+            border: 1px solid #0f0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cooker AI 控制台</h1>
+    <div id="console"></div>
+    <input id="input" type="text" placeholder="输入指令...">
+
+    <script>const consoleDiv = document.getElementById('console');
+        const input = document.getElementById('input');
+
+        function addMessage(sender, message) {
+            const p = document.createElement('p');
+            p.innerHTML = `<span class="${sender}">${sender}:</span> ${message}`;
+            consoleDiv.appendChild(p);
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        }
+
+        input.addEventListener('keypress', async (e) => {
+            if (e.key === 'Enter') {
+                const message = input.value;
+                input.value = '';
+
+                addMessage('创世神', message);
+
+                // 发送到后端
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({message: message})
+                });
+
+                const data = await response.json();
+                addMessage('Cooker', data.response);
+            }
+        });
+
+        addMessage('system', 'Cooker AI 已启动，请输入三级密钥验证');</script>
+</body>
+</html>

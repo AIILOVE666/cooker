@@ -1,0 +1,7 @@
+# requirements.txt
+python>=3.9
+flask>=2.0.0
+fastapi>=0.68.0
+uvicorn>=0.15.0
+pydantic>=1.8.0
+aiofiles>=0.7.0
