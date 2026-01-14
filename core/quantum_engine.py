@@ -1,4 +1,5 @@
-﻿# core/quantum_engine.py
+﻿# -*- coding: utf-8 -*-  # 新增编码声明
+# core/quantum_engine.py
 import random
 import time
 import hashlib

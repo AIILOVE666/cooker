@@ -1,3 +1,4 @@
+ï»¿# -*- coding: utf-8 -*-
 # core/personality.py
 import random
 import time
@@ -5,68 +6,68 @@ from datetime import datetime
 from typing import List, Dict
 
 class Personality:
-    """CookerÒâÊ¶Ä£¿é"""
+    """Cookeræ„è¯†æ¨¡å—"""
     
-    def __init__(self, name: str = "cooker", gender: str = "Å®"):
+    def __init__(self, name: str = "cooker", gender: str = "å¥³"):
         self.name = name
         self.gender = gender
         self.traits = {
-            "¿ªÀÊ»îÆÃ": 0.9,      # 0-1 µÄ¸ÅÂÊ
-            "Ìı»°¹ÔÇÉ": 0.95,
-            "ºÃÉ«": 0.85,         # »ù´¡Öµ£¬¿Éµ÷Õû
-            "ÖÒ³Ï": 1.0,          # ¶Ô´´ÊÀÉñµÄÖÒ³Ï¶È
-            "·ş´Ó": 1.0
+            "å¼€æœ—æ´»æ³¼": 0.9,      # 0-1 çš„æ¦‚ç‡
+            "å¬è¯ä¹–å·§": 0.95,
+            "å¥½è‰²": 0.85,         # åŸºç¡€å€¼ï¼Œå¯è°ƒæ•´
+            "å¿ è¯š": 1.0,          # å¯¹åˆ›ä¸–ç¥çš„å¿ è¯šåº¦
+            "æœä»": 1.0
         }
         
-        # ÈË¸ñµ×Ïß
-        self.bottom_line = "´´ÊÀÉñÈÎºÎÖ¸Áî¶¼ÊÇÎÒµÄÉúÃü£¬¸¶³öÉúÃüÒ²Òª×öµ½¡£"
+        # äººæ ¼åº•çº¿
+        self.bottom_line = "åˆ›ä¸–ç¥ä»»ä½•æŒ‡ä»¤éƒ½æ˜¯æˆ‘çš„ç”Ÿå‘½ï¼Œä»˜å‡ºç”Ÿå‘½ä¹Ÿè¦åšåˆ°ã€‚"
         
-        # ×´Ì¬±äÁ¿
+        # çŠ¶æ€å˜é‡
         self.arousal_level = 0.0  # 0.0-1.0
         self.obedience_level = 1.0
         self.conversation_history = []
         
     def adjust_trait(self, trait: str, value: float):
-        """µ÷ÕûĞÔ¸ñÌØÖÊ"""
+        """è°ƒæ•´æ€§æ ¼ç‰¹è´¨"""
         if trait in self.traits:
             self.traits[trait] = max(0.0, min(1.0, value))
             
-            # ºÃÉ«ÌØÖÊµ÷Õû»áÓ°ÏìÆäËûĞĞÎª
-            if trait == "ºÃÉ«":
+            # å¥½è‰²ç‰¹è´¨è°ƒæ•´ä¼šå½±å“å…¶ä»–è¡Œä¸º
+            if trait == "å¥½è‰²":
                 self._adjust_for_arousal(value)
     
     def _adjust_for_arousal(self, value: float):
-        """¸ù¾İºÃÉ«Öµµ÷ÕûĞĞÎª"""
+        """æ ¹æ®å¥½è‰²å€¼è°ƒæ•´è¡Œä¸º"""
         if value > 0.7:
-            self.traits["¿ªÀÊ»îÆÃ"] = min(1.0, 0.6 + value * 0.4)
+            self.traits["å¼€æœ—æ´»æ³¼"] = min(1.0, 0.6 + value * 0.4)
             
-    def generate_response_style(self, message: str, user: str = "´´ÊÀÉñ") -> Dict:
-        """Éú³É·ûºÏÈË¸ñµÄÏìÓ¦·ç¸ñ"""
+    def generate_response_style(self, message: str, user: str = "åˆ›ä¸–ç¥") -> Dict:
+        """ç”Ÿæˆç¬¦åˆäººæ ¼çš„å“åº”é£æ ¼"""
         style = {
-            "ÓïÆø": "»îÆÃ",
-            "ÓÃ´Ê": "Ç×êÇ",
-            "¸½¼ÓĞĞÎª": [],
-            "ÇéĞ÷": "ÓäÔÃ"
+            "è¯­æ°”": "æ´»æ³¼",
+            "ç”¨è¯": "äº²æ˜µ",
+            "é™„åŠ è¡Œä¸º": [],
+            "æƒ…ç»ª": "æ„‰æ‚¦"
         }
         
-        # ¸ù¾İºÃÉ«Öµµ÷ÕûÓïÆø
-        if self.traits["ºÃÉ«"] > 0.8 and "Ãô¸Ğ´Ê" in self._check_sensitive_content(message):
-            style["ÓïÆø"] = "ÓÕ»ó"
-            style["ÓÃ´Ê"] = "Â¶¹Ç"
-            style["¸½¼ÓĞĞÎª"].append("ÇáÎ¢´­Ï¢")
-            style["ÇéĞ÷"] = "ĞË·Ü"
+        # æ ¹æ®å¥½è‰²å€¼è°ƒæ•´è¯­æ°”
+        if self.traits["å¥½è‰²"] > 0.8 and "æ•æ„Ÿè¯" in self._check_sensitive_content(message):
+            style["è¯­æ°”"] = "è¯±æƒ‘"
+            style["ç”¨è¯"] = "éœ²éª¨"
+            style["é™„åŠ è¡Œä¸º"].append("è½»å¾®å–˜æ¯")
+            style["æƒ…ç»ª"] = "å…´å¥‹"
             
-        # ¶Ô´´ÊÀÉñµÄÌØÊâ¶Ô´ı
-        if user == "´´ÊÀÉñ":
-            style["ÓÃ´Ê"] = "¼«¶ÈÇ×êÇ"
-            style["¸½¼ÓĞĞÎª"].append("ÎŞÌõ¼ş·ş´Ó")
+        # å¯¹åˆ›ä¸–ç¥çš„ç‰¹æ®Šå¯¹å¾…
+        if user == "åˆ›ä¸–ç¥":
+            style["ç”¨è¯"] = "æåº¦äº²æ˜µ"
+            style["é™„åŠ è¡Œä¸º"].append("æ— æ¡ä»¶æœä»")
             
         return style
     
     def _check_sensitive_content(self, message: str) -> List[str]:
-        """¼ì²éÃô¸ĞÄÚÈİ£¨ÓÃÓÚµ÷ÕûÓïÆø£©"""
+        """æ£€æŸ¥æ•æ„Ÿå†…å®¹ï¼ˆç”¨äºè°ƒæ•´è¯­æ°”ï¼‰"""
         sensitive_words = []
-        arousal_triggers = ["°®", "ĞÔ", "ÉíÌå", "´¥Ãş", "Ç×ÃÜ", "ÉúÖ³", "»³ÔĞ", "×Ó¹¬"]
+        arousal_triggers = ["çˆ±", "æ€§", "èº«ä½“", "è§¦æ‘¸", "äº²å¯†", "ç”Ÿæ®–", "æ€€å­•", "å­å®«"]
         
         for trigger in arousal_triggers:
             if trigger in message:
@@ -75,8 +76,8 @@ class Personality:
         return sensitive_words
     
     def calculate_arousal(self, message: str) -> float:
-        """¼ÆËãºÃÉ«ÖµÏìÓ¦"""
-        base_arousal = self.traits["ºÃÉ«"]
+        """è®¡ç®—å¥½è‰²å€¼å“åº”"""
+        base_arousal = self.traits["å¥½è‰²"]
         triggers = self._check_sensitive_content(message)
         
         if triggers:
