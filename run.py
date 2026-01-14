@@ -1,7 +1,8 @@
-# run.py
+ï»¿# -*- coding: utf-8 -*-  # æ–°å¢ç¼–ç å£°æ˜
 #!/usr/bin/env python3
+# run.py
 """
-Cooker AI Æô¶¯½Å±¾
+Cooker AI å¯åŠ¨è„šæœ¬
 """
 
 import sys
@@ -9,74 +10,74 @@ import os
 from main import CookerAI, start_web_interface
 
 def main():
-    """Ö÷Æô¶¯º¯Êı"""
+    """ä¸»å¯åŠ¨å‡½æ•°"""
     print("=" * 50)
-    print("Cooker AI Æô¶¯ÖĞ...")
-    print("´´ÊÀÉñ×¨ÊôÈË¹¤ÖÇÄÜ")
+    print("Cooker AI å¯åŠ¨ä¸­...")
+    print("åˆ›ä¸–ç¥ä¸“å±äººå·¥æ™ºèƒ½")
     print("=" * 50)
     
-    # ´´½¨AIÊµÀı
+    # åˆ›å»ºAIå®ä¾‹
     ai = CookerAI()
     
-    # ÃÜÔ¿ÑéÖ¤
-    print(f"Èı¼¶ÃÜÔ¿ÑéÖ¤: {ai.key_question}")
-    print(f"ÌáÊ¾: {ai.key_hint}")
+    # å¯†é’¥éªŒè¯
+    print(f"ä¸‰çº§å¯†é’¥éªŒè¯: {ai.key_question}")
+    print(f"æç¤º: {ai.key_hint}")
     
-    answer = input("ÇëÊäÈëÃÜÔ¿: ").strip()
+    answer = input("è¯·è¾“å…¥å¯†é’¥: ").strip()
     
     verify_result = ai.verify_key(answer)
     print(verify_result["message"])
     
     if not verify_result["passed"]:
         if verify_result["can_retry"]:
-            print("»¹ÓĞÒ»´Î»ú»á")
-            answer = input("ÇëÖØĞÂÊäÈëÃÜÔ¿: ").strip()
+            print("è¿˜æœ‰ä¸€æ¬¡æœºä¼š")
+            answer = input("è¯·é‡æ–°è¾“å…¥å¯†é’¥: ").strip()
             verify_result = ai.verify_key(answer)
             print(verify_result["message"])
             
             if not verify_result["passed"]:
-                print("ÑéÖ¤Ê§°Ü£¬³ÌĞòÍË³ö")
+                print("éªŒè¯å¤±è´¥ï¼Œç¨‹åºé€€å‡º")
                 return
     
-    # ³õÊ¼»¯AI
+    # åˆå§‹åŒ–AI
     if ai.initialize():
-        print("Cooker AI ³õÊ¼»¯³É¹¦!")
-        print("ÊäÈë 'exit' ÍË³ö³ÌĞò")
-        print("ÊäÈë 'status' ²é¿´×´Ì¬")
-        print("ÊäÈë 'web' Æô¶¯Web½çÃæ")
+        print("Cooker AI åˆå§‹åŒ–æˆåŠŸ!")
+        print("è¾“å…¥ 'exit' é€€å‡ºç¨‹åº")
+        print("è¾“å…¥ 'status' æŸ¥çœ‹çŠ¶æ€")
+        print("è¾“å…¥ 'web' å¯åŠ¨Webç•Œé¢")
         print("-" * 30)
         
-        # ½»»¥Ñ­»·
+        # äº¤äº’å¾ªç¯
         while True:
             try:
                 user_input = input(f"{ai.creator_code} >> ").strip()
                 
-                if user_input.lower() in ['exit', 'quit', 'ÍË³ö']:
-                    print("Cooker AI ¹Ø±ÕÖĞ...")
+                if user_input.lower() in ['exit', 'quit', 'é€€å‡º']:
+                    print("Cooker AI å…³é—­ä¸­...")
                     break
                 elif user_input.lower() == 'status':
                     status = ai.get_status()
-                    print(f"×´Ì¬: {status}")
+                    print(f"çŠ¶æ€: {status}")
                     continue
                 elif user_input.lower() == 'web':
                     web_info = start_web_interface()
-                    print(f"Web½çÃæ: {web_info}")
+                    print(f"Webç•Œé¢: {web_info}")
                     continue
                 
-                # ´¦ÀíÏûÏ¢
+                # å¤„ç†æ¶ˆæ¯
                 response = ai.process_message(
                     user_input, 
                     user=ai.creator_code,
-                    exposure_level="Lv.0"  # Ä¬ÈÏ±©Â¶µÈ¼¶
+                    exposure_level="Lv.0"  # é»˜è®¤æš´éœ²ç­‰çº§
                 )
                 
                 print(f"Cooker >> {response}")
                 
             except KeyboardInterrupt:
-                print("\n³ÌĞò±»ÖĞ¶Ï")
+                print("\nç¨‹åºè¢«ä¸­æ–­")
                 break
             except Exception as e:
-                print(f"´íÎó: {e}")
+                print(f"é”™è¯¯: {e}")
                 continue
 
 if __name__ == "__main__":
